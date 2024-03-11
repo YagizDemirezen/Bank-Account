@@ -1,53 +1,392 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7E3805C8-6EBF-4FEA-A314-AA6EEF1EA9BF}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>BankAccount</RootNamespace>
-    <AssemblyName>BankAccount</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-</Project>
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankAccount
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            const int UserID = 12345, UserPassword = 67890, CardPassword = 1453;
+            int Choice1, Choice2, TransferID, UserCardPassword,MoneyTransfer, OnlineID, OnlinePassword;
+            double Money=1000, Withdraw, Deposit;
+
+        ATM_Start:
+            Console.WriteLine("\t===========================================================");
+            Console.WriteLine("\t| User ID: 12345, User Password: 67890, Card Password: 1453 | \n\n");
+            Console.WriteLine("\t\tATM MENU\n");
+            Console.WriteLine("\tWhat Do You Want?");
+            Console.WriteLine("\t1--> Use Your Card"); //User have a card.
+            Console.WriteLine("\t2--> Use The Online Login"); //User have not a card. Using the Online Login.
+            Console.WriteLine("\t3--> Leave\n\n"); // User leaves the program.
+            Console.Write("\tYour Choice: ");
+            Choice1 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("\t===========================================================");
+
+            switch (Choice1)
+            {
+                case 1:
+                    Console.Write("\tPlease Enter Your Card Password: ");
+                    UserCardPassword = Convert.ToInt32(Console.ReadLine());
+                    if (UserCardPassword == CardPassword)
+                    {
+                        Console.WriteLine("\tLogin Succesfully\n");
+
+                    Account:
+                        Console.WriteLine("\t===================================");
+                        Console.WriteLine("\tWelcome To The User's Bank Account\n\n");
+                        Console.WriteLine("\tAccount Money: " + Money + "$\n");
+                        Console.WriteLine("\tWhat Do You Want?");
+                        Console.WriteLine("\t1--> Withdraw");
+                        Console.WriteLine("\t2--> Deposit");
+                        Console.WriteLine("\t3--> Money Transfer");
+                        Console.WriteLine("\t4--> Leave");
+                        Console.Write("\tYour Choice: ");
+                        Choice2 = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("\t===================================");
+                
+                        switch (Choice2)
+                        {
+                            case 1:
+                                Console.WriteLine("\t===================================");
+                                Console.Write("\tPlease Enter Your Money To Withdraw: ");
+                                Withdraw = Convert.ToInt32(Console.ReadLine());
+                                Money -= Withdraw; // Money = Money - Withdraw;;
+                                Console.WriteLine("\tYour Withdraw Is Succesfully\n\tNew Account Money: " + Money + "$\n\n");
+                                Console.WriteLine("\t===================================");
+                                System.Threading.Thread.Sleep(2000);
+                                goto Account;                            
+                                break;
+                            case 2:
+                                Console.WriteLine("\t===================================");
+                                Console.Write("\tPlease Enter Your Money To Deposit: ");
+                                Deposit = Convert.ToInt32(Console.ReadLine());
+                                Money += Deposit; // Money = Money + Deposit;;
+                                Console.WriteLine("\tYour Deposit Is Succesfully\n\tNew Account Money: " + Money + "$\n\n");
+                                Console.WriteLine("\t===================================");
+                                System.Threading.Thread.Sleep(2000);
+                                goto Account;
+                                break;
+                            case 3:
+                                Console.WriteLine("\t===================================");
+                                Console.Write("\tPlease Enter Your Transfer ID: ");
+                                TransferID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("\tPlease Enter Money To Transfer Number To " + TransferID + ": ");
+                                MoneyTransfer = Convert.ToInt32(Console.ReadLine());
+                                Console.WriteLine("\t" + MoneyTransfer + "$ Succesfully Transfer To " + TransferID + " Have ID User\n");
+                                Console.WriteLine("\t===================================");
+                                System.Threading.Thread.Sleep(1000);
+                                Money -= MoneyTransfer; //Money = Money - MoneyTransfer;
+                                System.Threading.Thread.Sleep(750);
+                                goto Account;
+                                break;
+                            case 4:
+                                Console.WriteLine("\t===================================");
+                                Console.WriteLine("\tYou Are Leaving The Account\n");
+                                System.Threading.Thread.Sleep(750);
+                                Console.WriteLine("\t.");
+                                System.Threading.Thread.Sleep(750);
+                                Console.WriteLine("\t..");
+                                System.Threading.Thread.Sleep(750);
+                                Console.WriteLine("\t...");                               
+                                System.Threading.Thread.Sleep(750);
+                                goto ATM_Start;
+                                break;
+                            default:
+                                Console.WriteLine("Wrong Choice");
+                                System.Threading.Thread.Sleep(750);
+                                goto Account;
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("\tWrong Password. Please Try Again.");
+                        for (int i = 1;i<=2;i++)
+                        {
+                            Console.Write("\tPlease Enter Your Card Password: ");
+                            UserCardPassword = Convert.ToInt32(Console.ReadLine());
+
+                            if (UserCardPassword == CardPassword)
+                            {
+
+                            Account:
+                                Console.WriteLine("\t===================================");
+                                Console.WriteLine("\tWelcome To The User's Bank Account\n\n");
+                                Console.WriteLine("\tAccount Money: " + Money + "$\n");
+                                Console.WriteLine("\tWhat Do You Want?");
+                                Console.WriteLine("\t1--> Withdraw");
+                                Console.WriteLine("\t2--> Deposit");
+                                Console.WriteLine("\t3--> Money Transfer");
+                                Console.WriteLine("\t4--> Leave");
+                                Console.Write("\tYour Choice: ");
+                                Choice2 = Convert.ToInt32(Console.ReadLine());
+                                Console.WriteLine("\t===================================");
+
+                                switch (Choice2)
+                                {
+                                    case 1:
+                                        Console.WriteLine("\t===================================");
+                                        Console.Write("\tPlease Enter Your Money To Withdraw: ");
+                                        Withdraw = Convert.ToInt32(Console.ReadLine());
+                                        Money -= Withdraw; // Money = Money - Withdraw;;
+                                        Console.WriteLine("\tYour Withdraw Is Succesfully\n\tNew Account Money: " + Money + "$\n\n");
+                                        Console.WriteLine("\t===================================");
+                                        System.Threading.Thread.Sleep(2000);
+                                        goto Account;
+                                        break;
+                                    case 2:
+                                        Console.WriteLine("\t===================================");
+                                        Console.Write("\tPlease Enter Your Money To Deposit: ");
+                                        Deposit = Convert.ToInt32(Console.ReadLine());
+                                        Money += Deposit; // Money = Money + Deposit;
+                                        Console.WriteLine("\tYour Deposit Is Succesfully\n\tNew Account Money: " + Money + "$\n\n");
+                                        Console.WriteLine("\t===================================");
+                                        System.Threading.Thread.Sleep(2000);
+                                        goto Account;
+                                        break;
+                                    case 3:
+                                        Console.WriteLine("\t===================================");
+                                        Console.Write("\tPlease Enter Your Transfer ID: ");
+                                        TransferID = Convert.ToInt32(Console.ReadLine());
+                                        Console.Write("\tPlease Enter Money To Transfer Number To " + TransferID + ": ");
+                                        MoneyTransfer = Convert.ToInt32(Console.ReadLine());
+                                        Console.WriteLine("\t" + MoneyTransfer + "$ Succesfully Transfer To " + TransferID + " Have ID User\n");
+                                        Money -= MoneyTransfer; //Money = Money - MoneyTransfer;
+                                        Console.WriteLine("\t===================================");
+                                        System.Threading.Thread.Sleep(1000);
+                                        goto Account;
+                                        break;
+                                    case 4:
+                                        Console.WriteLine("\t===================================");
+                                        Console.WriteLine("\tYou Are Leaving The Account\n");
+                                        System.Threading.Thread.Sleep(750);
+                                        Console.WriteLine("\t.");
+                                        System.Threading.Thread.Sleep(750);
+                                        Console.WriteLine("\t..");
+                                        System.Threading.Thread.Sleep(750);
+                                        Console.WriteLine("\t...");
+                                        System.Threading.Thread.Sleep(750);
+                                        goto ATM_Start;
+                                        break;
+                                    default:
+                                        Console.WriteLine("Wrong Choice");
+                                        System.Threading.Thread.Sleep(750);
+                                        goto Account;
+                                }
+
+                            }
+                            else
+                            {
+                                if (i == 2)
+                                {
+                                    Console.WriteLine("\tWrong Password. Unsuccesfully Login\n\n");
+                                    System.Threading.Thread.Sleep(1000);
+                                    goto ATM_Start;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("\tWrong Password. Please Try Again");
+                                    
+                                }
+                            }
+                        }
+                 
+                    }
+                    break;
+                case 2:
+                    Console.Write("\tPlease Enter Your User ID: ");    
+                    OnlineID = Convert.ToInt32(Console.ReadLine());
+                    Console.Write("\tPlease Enter Your User Password: ");
+                    OnlinePassword = Convert.ToInt32(Console.ReadLine());
+
+                    if (UserID == OnlineID && UserPassword == OnlinePassword)
+                    {
+                        Console.WriteLine("\tLogin Succesfully");
+
+                    Account:
+                        Console.WriteLine("\t===================================");
+                        Console.WriteLine("\tWelcome To The User's Bank Account\n\n");
+                        Console.WriteLine("\tAccount Money: " + Money + "$\n");
+                        Console.WriteLine("\tWhat Do You Want?");
+                        Console.WriteLine("\t1--> Withdraw");
+                        Console.WriteLine("\t2--> Deposit");
+                        Console.WriteLine("\t3--> Money Transfer");
+                        Console.WriteLine("\t4--> Leave");
+                        Console.Write("\tYour Choice: ");
+                        Choice2 = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("\t===================================");
+
+                        switch (Choice2)
+                        {
+                            case 1:
+                                Console.WriteLine("\t===================================");
+                                Console.Write("\tPlease Enter Your Money To Withdraw: ");
+                                Withdraw = Convert.ToInt32(Console.ReadLine());
+                                Money -= Withdraw; // Money = Money - Withdraw;;
+                                Console.WriteLine("\tYour Withdraw Is Succesfully\n\tNew Account Money: " + Money + "$\n\n");
+                                Console.WriteLine("\t===================================");
+                                System.Threading.Thread.Sleep(2000);
+                                goto Account;
+                                break;
+                            case 2:
+                                Console.WriteLine("\t===================================");
+                                Console.Write("\tPlease Enter Your Money To Deposit: ");
+                                Deposit = Convert.ToInt32(Console.ReadLine());
+                                Money += Deposit; // Money = Money + Deposit;;
+                                Console.WriteLine("\tYour Deposit Is Succesfully\n\tNew Account Money: " + Money + "$\n\n");
+                                Console.WriteLine("\t===================================");
+                                System.Threading.Thread.Sleep(2000);
+                                goto Account;
+                                break;
+                            case 3:
+                                Console.WriteLine("\t===================================");
+                                Console.Write("\tPlease Enter Your Transfer ID: ");
+                                TransferID = Convert.ToInt32(Console.ReadLine());
+                                Console.Write("\tPlease Enter Money To Transfer Number To " + TransferID + ": ");
+                                MoneyTransfer = Convert.ToInt32(Console.ReadLine());
+                                Console.WriteLine("\t" + MoneyTransfer + "$ Succesfully Transfer To " + TransferID + " Have ID User\n");
+                                Console.WriteLine("\t===================================");
+                                System.Threading.Thread.Sleep(1000);
+                                Money -= MoneyTransfer; //Money = Money - MoneyTransfer;
+                                goto Account;
+                                break;
+                            case 4:
+                                Console.WriteLine("\t===================================");
+                                Console.WriteLine("\tYou Are Leaving The Account\n");
+                                System.Threading.Thread.Sleep(750);
+                                Console.WriteLine("\t.");
+                                System.Threading.Thread.Sleep(750);
+                                Console.WriteLine("\t..");
+                                System.Threading.Thread.Sleep(750);
+                                Console.WriteLine("\t...");
+                                System.Threading.Thread.Sleep(750);
+                                goto ATM_Start;
+                                break;
+                            default:
+                                Console.WriteLine("Wrong Choice");
+                                goto Account;
+                        }
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("\tWrong ID Or Password. Please Try Again.");
+                        for (int i = 1; i <= 2; i++)
+                        {
+                            Console.Write("\tPlease Enter Your User ID: ");
+                            OnlineID = Convert.ToInt32(Console.ReadLine());
+                            Console.Write("\tPlease Enter Your User Password: ");
+                            OnlinePassword = Convert.ToInt32(Console.ReadLine());
+
+
+                            if (UserID == OnlineID && UserPassword == OnlinePassword)
+                            {
+                                Console.WriteLine("\tLogin Succesfully\n");
+
+                            Account:
+                                Console.WriteLine("\t===================================");
+                                Console.WriteLine("\tWelcome To The User's Bank Account\n\n");
+                                Console.WriteLine("\tAccount Money: " + Money + "$\n");
+                                Console.WriteLine("\tWhat Do You Want?");
+                                Console.WriteLine("\t1--> Withdraw");
+                                Console.WriteLine("\t2--> Deposit");
+                                Console.WriteLine("\t3--> Money Transfer");
+                                Console.WriteLine("\t4--> Leave");
+                                Console.Write("\tYour Choice: ");
+                                Choice2 = Convert.ToInt32(Console.ReadLine());
+                                Console.WriteLine("\t===================================");
+
+                                switch (Choice2)
+                                {
+                                    case 1:
+                                        Console.WriteLine("\t===================================");
+                                        Console.Write("\tPlease Enter Your Money To Withdraw: ");
+                                        Withdraw = Convert.ToInt32(Console.ReadLine());
+                                        Money -= Withdraw; // Money = Money - Withdraw;;
+                                        Console.WriteLine("\tYour Withdraw Is Succesfully\n\tNew Account Money: " + Money + "$\n\n");
+                                        Console.WriteLine("\t===================================");
+                                        System.Threading.Thread.Sleep(2000);
+                                        goto Account;
+                                        break;
+                                    case 2:
+                                        Console.WriteLine("\t===================================");
+                                        Console.Write("\tPlease Enter Your Money To Deposit: ");
+                                        Deposit = Convert.ToInt32(Console.ReadLine());
+                                        Money += Deposit; // Money = Money + Deposit;
+                                        Console.WriteLine("\tYour Deposit Is Succesfully\n\tNew Account Money: " + Money + "$\n\n");
+                                        Console.WriteLine("\t===================================");
+                                        System.Threading.Thread.Sleep(2000);
+                                        goto Account;
+                                        break;
+                                    case 3:
+                                        Console.WriteLine("\t===================================");
+                                        Console.Write("\tPlease Enter Your Transfer ID: ");
+                                        TransferID = Convert.ToInt32(Console.ReadLine());
+                                        Console.Write("\tPlease Enter Money To Transfer Number To " + TransferID + ": ");
+                                        MoneyTransfer = Convert.ToInt32(Console.ReadLine());
+                                        Console.WriteLine("\t" + MoneyTransfer + "$ Succesfully Transfer To " + TransferID + " Have ID User\n");
+                                        Money -= MoneyTransfer; //Money = Money - MoneyTransfer;
+                                        Console.WriteLine("\t===================================");
+                                        System.Threading.Thread.Sleep(1000);
+                                        goto Account;
+                                        break;
+                                    case 4:
+                                        Console.WriteLine("\t===================================");
+                                        Console.WriteLine("\tYou Are Leaving The Account\n");
+                                        System.Threading.Thread.Sleep(750);
+                                        Console.WriteLine("\t.");
+                                        System.Threading.Thread.Sleep(750);
+                                        Console.WriteLine("\t..");
+                                        System.Threading.Thread.Sleep(750);
+                                        Console.WriteLine("\t...");
+                                        System.Threading.Thread.Sleep(750);
+                                        goto ATM_Start;
+                                        break;
+                                    default:
+                                        Console.WriteLine("Wrong Choice");
+                                        goto Account;
+                                }
+
+                            }
+                            else
+                            {
+                                if (i == 2)
+                                {
+                                    Console.WriteLine("\tWrong User ID Or Password. Unsuccesfully Login\n\n");
+                                    System.Threading.Thread.Sleep(1000);
+                                    goto ATM_Start;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("\tWrong User ID Or Password. Please Try Again");
+
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case 3:
+                    Console.WriteLine("\tYou Are Leaving\n");
+                    System.Threading.Thread.Sleep(700);
+                    Console.WriteLine("\t.");
+                    System.Threading.Thread.Sleep(700);
+                    Console.WriteLine("\t..");
+                    System.Threading.Thread.Sleep(700);
+                    Console.WriteLine("\t...");
+                    System.Threading.Thread.Sleep(700);
+                    Console.WriteLine("\tPress Enter The Close...");
+                    break;
+                default:
+                    Console.WriteLine("Wrong Choice...");
+                    System.Threading.Thread.Sleep(750);
+                    goto ATM_Start;
+            }
+            Console.ReadLine();
+        }
+    }
+}
